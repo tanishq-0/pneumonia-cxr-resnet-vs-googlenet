@@ -32,7 +32,9 @@ def compute_metrics(
     except ValueError:
         auroc = float("nan")
 
+    acc = (tp + tn) / max(tp + tn + fp + fn, 1)
     return {
+        "accuracy": float(acc),
         "auroc": float(auroc),
         "mcc": float(mcc),
         "sensitivity": float(sens),

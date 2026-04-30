@@ -149,9 +149,9 @@ def evaluate_variant(
     y_true, y_prob = test_m["_y_true"], test_m["_y_prob"]
 
     print(
-        f"  test  AUROC={test_m['auroc']:.4f}  MCC={test_m['mcc']:.4f}  "
-        f"sens={test_m['sensitivity']:.3f}  spec={test_m['specificity']:.3f}  "
-        f"F1={test_m['f1']:.3f}"
+        f"  test  acc={test_m['accuracy']:.4f}  AUROC={test_m['auroc']:.4f}  "
+        f"MCC={test_m['mcc']:.4f}  sens={test_m['sensitivity']:.3f}  "
+        f"spec={test_m['specificity']:.3f}  F1={test_m['f1']:.3f}"
     )
     print(
         f"  CM    TP={test_m['tp']} TN={test_m['tn']} FP={test_m['fp']} "
