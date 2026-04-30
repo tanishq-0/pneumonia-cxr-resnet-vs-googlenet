@@ -1,0 +1,5 @@
+arch,aug,model_params_mb,train_time_s,peak_gpu_mb
+googlenet,0,21.37,1004.48,1580.5
+googlenet,1,21.37,1472.45,1580.5
+resnet18,0,42.64,1091.04,817.5
+resnet18,1,42.64,1470.8,819.2
