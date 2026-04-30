@@ -1,6 +1,6 @@
 # Pneumonia CXR Classification — ResNet-18 vs GoogLeNet
 
-PyTorch implementation of the code plan in `code-plan.md`: 4-model comparison
+PyTorch implementation of the code plan in: 4-model comparison
 (ResNet-18 / GoogLeNet × no-aug / aug) on the Kermany paediatric chest X-ray
 dataset, with patient-level splitting, two-stage transfer learning, and
 GradCAM++ explanations.
