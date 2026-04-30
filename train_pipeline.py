@@ -61,7 +61,8 @@ def stage1_head_training(
             val_m = evaluate(model, val_loader, criterion=criterion)
             scheduler.step(val_m["auroc"])
             print(
-                f"  ep{epoch:02d} tr_loss={tr_loss:.4f} val_loss={val_m['loss']:.4f} "
+                f"  ep{epoch:02d} tr_loss={tr_loss:.4f} tr_acc={tr_acc:.3f} "
+                f"val_loss={val_m['loss']:.4f} val_acc={val_m['accuracy']:.3f} "
                 f"val_auroc={val_m['auroc']:.4f} val_sens={val_m['sensitivity']:.3f} "
                 f"val_spec={val_m['specificity']:.3f}"
             )
@@ -134,7 +135,8 @@ def stage2_full_finetune(
             val_m = evaluate(model, val_loader, criterion=criterion)
             scheduler.step()
             print(
-                f"  ep{epoch:02d} tr_loss={tr_loss:.4f} val_loss={val_m['loss']:.4f} "
+                f"  ep{epoch:02d} tr_loss={tr_loss:.4f} tr_acc={tr_acc:.3f} "
+                f"val_loss={val_m['loss']:.4f} val_acc={val_m['accuracy']:.3f} "
                 f"val_auroc={val_m['auroc']:.4f} val_sens={val_m['sensitivity']:.3f} "
                 f"val_spec={val_m['specificity']:.3f}"
             )
