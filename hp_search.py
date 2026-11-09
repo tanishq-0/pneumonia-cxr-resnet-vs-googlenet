@@ -1,4 +1,4 @@
-"""Algorithm 3 — Coordinate hyperparameter search (one axis at a time)."""
+"""Coordinate hyperparameter search (one axis at a time, Stage-1 head training)."""
 from __future__ import annotations
 from typing import Dict, List
 

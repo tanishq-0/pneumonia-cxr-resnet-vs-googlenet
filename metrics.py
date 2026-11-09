@@ -48,7 +48,12 @@ def compute_metrics(
 def find_threshold_for_sensitivity(
     y_true: np.ndarray, y_prob_pos: np.ndarray, target_sens: float = 0.95
 ) -> float:
-    """Lowest threshold whose sensitivity meets target_sens (else min explored)."""
+    """Highest threshold on a 0.01-0.99 grid whose sensitivity still meets target_sens.
+
+    Scans from high to low and returns the first threshold that reaches the target,
+    i.e. the most specific operating point that satisfies the sensitivity constraint.
+    Falls back to the lowest grid value (0.01) if the target is never reached.
+    """
     y_true = np.asarray(y_true).astype(int)
     y_prob_pos = np.asarray(y_prob_pos).astype(float)
     thresholds = np.linspace(0.01, 0.99, 99)

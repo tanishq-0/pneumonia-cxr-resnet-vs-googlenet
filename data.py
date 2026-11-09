@@ -1,4 +1,4 @@
-"""Algorithm 1 — Patient-level data preparation, splits, transforms, loaders."""
+"""Patient-level data preparation: grouped splits, transforms and data loaders."""
 from __future__ import annotations
 import re
 from pathlib import Path
@@ -218,6 +218,6 @@ def build_loaders(
 
 
 def get_data_splits(seed: int = SEED):
-    """Convenience: collect + split. Cached on the function via Python defaults? No, just call once."""
+    """Collect every image and return the patient-level (train, val, test) split."""
     df = collect_records()
     return patient_level_split(df, seed=seed)

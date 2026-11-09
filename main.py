@@ -1,14 +1,14 @@
 """Pneumonia CXR classification — full pipeline orchestrator.
 
-Pipeline (matches code-plan.md):
-  Algorithm 0 — seed everything.
-  Algorithm 1 — collect + patient-level split (once, shared by all variants).
-  Algorithm 3 — HP search per architecture (resnet18 no-aug, googlenet no-aug).
-                Best HPs for each arch are reused for that arch's augmented variant.
-  Algorithm 4 — Stage-1 head training, for all 4 (arch, aug) variants.
-  Algorithm 5 — Stage-2 full fine-tune,  for all 4 (arch, aug) variants.
-  Algorithm 6 — Test-set evaluation + GradCAM++, for all 4 variants.
-  Algorithm 7 — Aggregate report tables.
+Pipeline:
+  1. Seed everything.
+  2. Collect all images and split at patient level (once, shared by all variants).
+  3. Coordinate HP search per architecture on the no-augmentation data.
+     The best HPs for each architecture are reused for its augmented variant.
+  4. Stage-1 head training for all 4 (arch, aug) variants.
+  5. Stage-2 full fine-tuning for all 4 variants.
+  6. Test-set evaluation, threshold sweep and GradCAM++ for all 4 variants.
+  7. Aggregate the summary tables.
 
 CLI:
   python main.py                 # full pipeline (~hours)
@@ -54,14 +54,14 @@ def main(argv=None) -> int:
         return 0
 
     print("=" * 70)
-    print("Algorithm 1 — collecting records and splitting at patient level")
+    print("Collecting records and splitting at patient level")
     print("=" * 70)
     train_df, val_df, test_df = get_data_splits()
 
     archs = list(args.archs)
     augs = [bool(a) for a in args.augs]
 
-    # ---------- Algorithm 3 — HP search per architecture (no-aug) ----------
+    # ---------- HP search per architecture (no-aug) ----------
     best_hp_per_arch: Dict[str, Dict] = {}
     if args.skip_hp or args.eval_only:
         for arch in archs:
@@ -69,7 +69,7 @@ def main(argv=None) -> int:
             print(f"[HP] using baseline for {arch}: {BASELINE_HP}")
     else:
         print("\n" + "=" * 70)
-        print("Algorithm 3 — coordinate HP search (per architecture, no-aug)")
+        print("Coordinate HP search (per architecture, no-aug)")
         print("=" * 70)
         for arch in archs:
             best_hp_per_arch[arch] = run_hp_search(
@@ -77,10 +77,10 @@ def main(argv=None) -> int:
             )
             print(f"[HP] best for {arch}: {best_hp_per_arch[arch]}")
 
-    # ---------- Algorithms 4 & 5 — Stage-1 + Stage-2 for all variants ----------
+    # ---------- Stage-1 + Stage-2 training for all variants ----------
     if not args.eval_only:
         print("\n" + "=" * 70)
-        print("Algorithms 4 + 5 — Stage-1 head training + Stage-2 fine-tuning")
+        print("Stage-1 head training + Stage-2 fine-tuning")
         print("=" * 70)
         for arch in archs:
             for aug in augs:
@@ -88,18 +88,18 @@ def main(argv=None) -> int:
                 stage1_head_training(arch, aug, hp, train_df, val_df, test_df)
                 stage2_full_finetune(arch, aug, hp, train_df, val_df, test_df)
 
-    # ---------- Algorithm 6 — Test-set evaluation ----------
+    # ---------- Test-set evaluation ----------
     print("\n" + "=" * 70)
-    print("Algorithm 6 — Test-set evaluation + GradCAM++")
+    print("Test-set evaluation + GradCAM++")
     print("=" * 70)
     for arch in archs:
         for aug in augs:
             hp = best_hp_per_arch[arch]
             evaluate_variant(arch, aug, hp, train_df, val_df, test_df)
 
-    # ---------- Algorithm 7 — Aggregate ----------
+    # ---------- Aggregate ----------
     print("\n" + "=" * 70)
-    print("Algorithm 7 — Final comparison tables")
+    print("Final comparison tables")
     print("=" * 70)
     build_report_tables()
     return 0

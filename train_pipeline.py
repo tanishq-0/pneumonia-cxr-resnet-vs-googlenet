@@ -1,4 +1,4 @@
-"""Algorithms 4 & 5 — Stage-1 head training and Stage-2 full fine-tuning."""
+"""Two-stage transfer learning: Stage-1 head training and Stage-2 full fine-tuning."""
 from __future__ import annotations
 from pathlib import Path
 from typing import Dict
@@ -27,7 +27,7 @@ def stage1_head_training(
     arch: str, aug: bool, hp: Dict,
     train_df, val_df, test_df,
 ) -> Dict:
-    """Algorithm 4 — freeze backbone, train fc head only."""
+    """Stage 1: freeze the backbone and train only the fc head."""
     set_seed()
     print(f"\n[STAGE 1] arch={arch} aug={aug} hp={hp}")
     train_loader, val_loader, _, class_weights = build_loaders(
@@ -98,7 +98,7 @@ def stage2_full_finetune(
     arch: str, aug: bool, hp: Dict,
     train_df, val_df, test_df,
 ) -> Dict:
-    """Algorithm 5 — load Stage-1 weights, unfreeze all, differential LR + cosine."""
+    """Stage 2: load Stage-1 weights, unfreeze all layers, differential LR + cosine schedule."""
     set_seed()
     print(f"\n[STAGE 2] arch={arch} aug={aug} hp={hp}")
     train_loader, val_loader, _, class_weights = build_loaders(

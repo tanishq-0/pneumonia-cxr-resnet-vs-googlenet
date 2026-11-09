@@ -1,4 +1,4 @@
-"""Algorithm 7 — Aggregate results.csv into report-ready tables."""
+"""Aggregate outputs/results.csv into summary tables."""
 from __future__ import annotations
 from pathlib import Path
 
@@ -36,7 +36,7 @@ def build_report_tables(csv_path: Path = RESULTS_CSV) -> None:
         print(master.to_string(index=False))
         print(f"saved → {out}")
 
-    # ---------- HP sweep effects (Algorithm 3 rows) ----------
+    # ---------- HP sweep effects (hyperparameter-search rows) ----------
     hp_rows = df[df["notes"] == "hp_search"].copy()
     if not hp_rows.empty:
         for axis in ["lr", "momentum", "batch_size"]:

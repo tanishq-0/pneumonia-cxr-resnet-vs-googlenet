@@ -1,4 +1,4 @@
-"""Algorithm 6 — Test-set evaluation with threshold sweep + GradCAM++ figures."""
+"""Test-set evaluation with a threshold sweep and GradCAM++ figures."""
 from __future__ import annotations
 from pathlib import Path
 from typing import Dict, List
@@ -130,7 +130,7 @@ def _pick_examples(y_true, y_prob, threshold=0.5):
 def evaluate_variant(
     arch: str, aug: bool, hp: Dict, train_df, val_df, test_df,
 ) -> Dict:
-    """Algorithm 6 for one (arch, aug). Loads s2 ckpt, computes metrics + figures."""
+    """Evaluate one (arch, aug) variant: load its Stage-2 checkpoint, compute metrics and figures."""
     set_seed()
     print(f"\n[TEST EVAL] arch={arch} aug={aug}")
     train_loader, val_loader, test_loader, _ = build_loaders(

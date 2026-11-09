@@ -1,4 +1,4 @@
-"""Algorithm 2 — Build ResNet-18 / GoogLeNet with 2-class head; expose GradCAM target."""
+"""Build ResNet-18 / GoogLeNet with a 2-class head and expose the GradCAM++ target layer."""
 from __future__ import annotations
 from typing import Tuple
 
